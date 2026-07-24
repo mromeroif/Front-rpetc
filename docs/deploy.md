@@ -22,9 +22,9 @@ No hace falta secret `FRONTEND_BUCKET`: el workflow usa **`rpetc-dev`** directam
 | Variable | Default |
 |----------|---------|
 | `AWS_REGION` | `us-east-1` |
-| `STACK_NAME` | `rpetc-modern-app` |
-| `FRONTEND_S3_PREFIX` | vacío |
 | `SETUP_FRONTEND_HOSTING` | `0` |
+
+**No configures** `STACK_NAME` ni `FRONTEND_BUCKET` en GitHub: el workflow usa **`rpetc-modern-app`** y **`rpetc-dev`** fijos. Si tienes `STACK_NAME=rpetc-modern-app-qa` en variables, bórrala o ignórala (ya no se lee).
 
 ## Local
 Copia `.env.dev.example` → `.env.dev` (`FRONTEND_BUCKET=rpetc-dev`).

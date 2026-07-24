@@ -30,7 +30,7 @@ if ($Environment -eq "qa") {
 }
 
 if (-not $StackName) {
-    $StackName = if ($Environment -eq "dev") { "rpetc-modern-app" } else { "rpetc-modern-app" }
+    $StackName = "rpetc-modern-app"
 }
 
 function Read-EnvFile {
