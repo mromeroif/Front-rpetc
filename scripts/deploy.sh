@@ -36,7 +36,7 @@ if [[ "${SETUP_FRONTEND_HOSTING}" == "1" ]]; then
     --region "${AWS_REGION}"
 fi
 
-npm ci
+npm install --no-audit --no-fund
 export VITE_API_BASE_URL
 if [[ -n "${FRONTEND_S3_PREFIX}" ]]; then
   prefix="${FRONTEND_S3_PREFIX#/}"
