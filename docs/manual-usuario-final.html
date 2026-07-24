@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guia de uso - Consultas SII (usuarios finales)</title>
+  <style>
+    /* Paleta alineada a la app (navbar oscuro, fondo claro, tarjetas blancas, acciones slate) */
+    :root {
+      --nav-bg: #2c3e50;
+      --nav-text: #ffffff;
+      --page-bg: #ecf0f1;
+      --card-bg: #ffffff;
+      --text: #212529;
+      --muted: #6c757d;
+      --border: #dee2e6;
+      --input-border: #ced4da;
+      --instr-bg: #f8f9fa;
+      --primary-action: #34495e;
+      --required: #dc3545;
+      --link: #0d6efd;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--page-bg);
+      margin: 0;
+      padding: 0 0 2.5rem;
+    }
+    .doc-wrap {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 1.25rem 1rem 2rem;
+    }
+    .doc-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    h1 { font-size: 1.65rem; margin: 0 0 0.5rem; color: var(--text); }
+    h2 {
+      font-size: 1.2rem;
+      margin: 1.75rem 0 0.75rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 2px solid var(--border);
+      color: var(--text);
+    }
+    h2:first-of-type { margin-top: 0; }
+    h3 { font-size: 1.02rem; margin: 1.1rem 0 0.5rem; color: var(--text); }
+    p, li { font-size: 0.95rem; }
+    .lead { font-size: 0.98rem; color: var(--muted); margin: 0.35rem 0; }
+    a { color: var(--link); }
+    code, .msg {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 0.86em;
+      background: var(--instr-bg);
+      padding: 0.12em 0.35em;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    table.doc-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 0.75rem 0; }
+    .doc-table th, .doc-table td { border: 1px solid var(--border); padding: 0.45rem 0.6rem; text-align: left; }
+    .doc-table th { background: var(--instr-bg); font-weight: 600; }
+    .toc { background: var(--instr-bg); padding: 0.9rem 1.1rem; border-radius: 8px; margin: 1rem 0; border: 1px solid var(--border); }
+    .toc ol { margin: 0; padding-left: 1.2rem; }
+    .note {
+      background: #e8f4fc;
+      border-left: 4px solid var(--link);
+      padding: 0.65rem 0.9rem;
+      margin: 0.85rem 0;
+      font-size: 0.9rem;
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* ----- Ejemplos UI (misma jerarquia que la app) ----- */
+    .ui-caption {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin: 0.35rem 0 0.6rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .demo-shell {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0.75rem 0 1.25rem;
+      page-break-inside: avoid;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .demo-nav {
+      background: var(--nav-bg);
+      color: var(--nav-text);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.55rem 1rem;
+      min-height: 3rem;
+    }
+    .demo-nav-brand {
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+    }
+    .demo-nav-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; }
+    .demo-btn-pill {
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.8rem;
+      font-family: inherit;
+      cursor: default;
+    }
+    .demo-btn-ghost {
+      background: transparent;
+      color: #fff;
+      border: 1px solid #fff;
+      border-radius: 4px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.8rem;
+      font-family: inherit;
+      cursor: default;
+    }
+    .demo-strip {
+      background: #e8eef0;
+      padding: 0.45rem 1rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .demo-main {
+      background: var(--page-bg);
+      padding: 1rem;
+    }
+    .demo-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .demo-page-h1 { font-size: 1.1rem; font-weight: 600; margin: 0; color: var(--text); }
+    .demo-user { font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
+    .demo-tabs { display: flex; gap: 0; margin-bottom: 0.75rem; }
+    .demo-tab {
+      border: 1px solid var(--primary-action);
+      padding: 0.4rem 0.85rem;
+      font-size: 0.8rem;
+      font-family: inherit;
+      cursor: default;
+      background: #fff;
+      color: var(--primary-action);
+    }
+    .demo-tab:first-child { border-radius: 4px 0 0 4px; }
+    .demo-tab:last-child { border-radius: 0 4px 4px 0; margin-left: -1px; }
+    .demo-tab.active {
+      background: var(--primary-action);
+      color: #fff;
+      z-index: 1;
+    }
+    .demo-card-inner {
+      background: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.07);
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--border);
+    }
+    .demo-instr {
+      background: var(--instr-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+    }
+    .demo-instr h4 { margin: 0 0 0.5rem; font-size: 0.95rem; font-weight: 600; }
+    .demo-instr ol { margin: 0; padding-left: 1.2rem; font-size: 0.85rem; }
+    .demo-instr p.small { margin: 0.5rem 0 0; font-size: 0.78rem; color: var(--muted); }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem 1rem;
+    }
+    @media (max-width: 520px) { .demo-grid { grid-template-columns: 1fr; } }
+    .demo-field label {
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 0.2rem;
+      font-weight: 500;
+    }
+    .req { color: var(--required); font-weight: 700; }
+    .demo-input {
+      width: 100%;
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      padding: 0.45rem 0.55rem;
+      font-size: 0.82rem;
+      font-family: inherit;
+      background: #fff;
+      color: var(--muted);
+    }
+    .demo-hint { font-size: 0.78rem; color: var(--muted); margin: 0.65rem 0 0.85rem; }
+    .demo-submit {
+      background: var(--primary-action);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.45rem 1.1rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: default;
+    }
+    figure {
+      margin: 1rem 0;
+      padding: 0.65rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      page-break-inside: avoid;
+    }
+    figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+    figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 0.45rem; text-align: center; }
+
+    @media print {
+      body { background: #fff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      .doc-wrap { max-width: none; padding: 0; }
+      .doc-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+      .demo-shell { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .demo-nav { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .demo-tab.active { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .demo-submit { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      a[href]::after { content: ""; }
+      .toc { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="doc-wrap">
+  <div class="doc-card">
+    <h1>Guia de uso del sistema</h1>
+    <p class="lead">Manual para <strong>usuarios que consultan el SII</strong> desde el navegador, sin necesidad de conocimientos tecnicos.</p>
+    <p class="lead">Mas abajo encontrara <strong>ejemplos visuales</strong>: recuadros que <strong>imitan la pantalla real</strong> (mismas etiquetas y textos que en la aplicacion). Sirven de referencia rapida antes de leer las guias paso a paso.</p>
+  </div>
+
+  <div class="doc-card">
+    <nav class="toc" aria-label="Contenido">
+      <strong>Contenido</strong>
+      <ol>
+        <li><a href="#ejemplos-ui">Ejemplos de pantalla (referencia visual)</a></li>
+        <li><a href="#que-es">Que hace la aplicacion</a></li>
+        <li><a href="#antes">Antes de empezar</a></li>
+        <li><a href="#login">Entrar y salir</a></li>
+        <li><a href="#certificado">Certificado de cesion</a></li>
+        <li><a href="#cesiones">Consulta cesiones</a></li>
+        <li><a href="#masivo">Consulta masiva y certificado masivo</a></li>
+        <li><a href="#solicitudes">Solicitudes</a></li>
+        <li><a href="#pdf">Obtener el PDF</a></li>
+        <li><a href="#problemas">Si algo sale mal</a></li>
+        <li><a href="#mensajes">Mensajes de referencia</a></li>
+      </ol>
+    </nav>
+  </div>
+
+  <h2 id="ejemplos-ui">Ejemplos de pantalla (referencia visual)</h2>
+  <p>La aplicacion usa una <strong>barra superior oscura</strong> con el nombre del sistema y botones claros; el fondo de la pagina es <strong>gris muy claro</strong> y el contenido importante va en <strong>tarjetas blancas</strong>. Las acciones principales (por ejemplo <strong>Ejecutar</strong>, <strong>Ingresar</strong>) se ven como botones oscuros. La pantalla de ingreso es una <strong>tarjeta centrada</strong> sobre ese mismo fondo, sin barra de menu hasta que entre al sistema.</p>
+
+  <h3>Pantalla — Ingreso al sistema (login)</h3>
+  <p>Es la pantalla inicial si nadie ha iniciado sesion en ese navegador (o si la sesion caduco). Debe completar los dos campos y pulsar <strong>Ingresar</strong>; mientras el sistema valida los datos, el boton puede cambiar a <strong>Ingresando...</strong> y no debe pulsarlo de nuevo hasta que termine.</p>
+  <p class="ui-caption">Titulo <strong>Consultas SII</strong>, subtitulo <strong>Ingreso seguro al sistema</strong>, <strong>Usuario</strong>, <strong>Password</strong>, boton <strong>Ingresar</strong></p>
+  <div class="demo-shell">
+    <div class="demo-main" style="display:flex;justify-content:center;align-items:flex-start;padding:1.5rem 1rem 2rem;min-height:260px;">
+      <div class="demo-card-inner" style="max-width:22rem;width:100%;margin:0 auto;box-shadow:0 4px 14px rgba(0,0,0,.1);">
+        <div class="demo-page-h1" style="text-align:center;font-size:1.05rem;margin-bottom:0.2rem;">Consultas SII</div>
+        <p style="text-align:center;font-size:0.8rem;color:var(--muted);margin:0 0 1rem;">Ingreso seguro al sistema</p>
+        <div class="demo-field">
+          <label>Usuario</label>
+          <div class="demo-input">Ingresa tu usuario</div>
+        </div>
+        <div class="demo-field">
+          <label>Password</label>
+          <div class="demo-input" style="letter-spacing:0.12em;color:var(--muted);">********</div>
+        </div>
+        <button type="button" class="demo-submit" style="width:100%;margin-top:0.35rem;">Ingresar</button>
+      </div>
+    </div>
+  </div>
+
+  <h3>Menu superior</h3>
+  <p>Despues de entrar, esta barra se muestra <strong>siempre arriba</strong>. <strong>Principal</strong> lleva a consulta de cesiones y certificado masivo; <strong>Historial</strong> al listado de tramites ya pedidos; <strong>Salir</strong> cierra la sesion de forma segura. Debajo del menu suele verse el nombre de usuario activo.</p>
+  <p class="ui-caption">Principal, Historial y Salir</p>
+  <div class="demo-shell">
+    <div class="demo-nav">
+      <span class="demo-nav-brand">Consultas SII</span>
+      <div class="demo-nav-actions">
+        <span class="demo-btn-pill">Principal</span>
+        <span class="demo-btn-pill">Historial</span>
+        <span class="demo-btn-ghost">Salir</span>
+      </div>
+    </div>
+    <div class="demo-strip">Usuario: ibramer</div>
+  </div>
+
+  <h3>Pantalla — Obtencion de certificado de cesion</h3>
+  <p>Aqui pide al SII un <strong>certificado de cesion</strong> para un <strong>periodo</strong> de fechas. Las fechas <strong>Desde</strong> y <strong>Hasta</strong> son obligatorias. Los campos de deudor y cliente son <strong>opcionales</strong>: rellenelos solo si su caso lo requiere. El recuadro de <strong>Instrucciones</strong> en la app resume el mismo orden de pasos.</p>
+  <p class="ui-caption">Pestaña <strong>Certificado de cesion</strong></p>
+  <div class="demo-shell">
+    <div class="demo-nav">
+      <span class="demo-nav-brand">Consultas SII</span>
+      <div class="demo-nav-actions">
+        <span class="demo-btn-pill">Principal</span>
+        <span class="demo-btn-pill">Historial</span>
+        <span class="demo-btn-ghost">Salir</span>
+      </div>
+    </div>
+    <div class="demo-strip">Usuario: ibramer</div>
+    <div class="demo-main">
+      <div class="demo-header-row">
+        <div class="demo-page-h1">Obtencion de certificado de cesion</div>
+        <span class="demo-user">Usuario: ibramer</span>
+      </div>
+      <div class="demo-tabs">
+        <span class="demo-tab active">Certificado de cesion</span>
+        <span class="demo-tab">Consulta cesiones</span>
+      </div>
+      <div class="demo-card-inner">
+        <div class="demo-instr">
+          <h4>Instrucciones</h4>
+          <ol>
+            <li>Elige el <strong>periodo</strong> con <strong>Desde</strong> y <strong>Hasta</strong> (obligatorias).</li>
+            <li>Si aplica, ingresa el <strong>RUT del deudor</strong> y el <strong>RUT del cliente</strong> (puedes escribirlos con o sin puntos).</li>
+            <li>Pulsa <strong>Ejecutar</strong> para solicitar el certificado. Si el documento esta listo, puede abrirse en otra pestana; si no, entra a <strong>Solicitudes</strong>, abre el detalle y usa <strong>Obtener documento</strong>.</li>
+          </ol>
+          <p class="small">Revisa que las fechas cubran el periodo que necesitas.</p>
+        </div>
+        <div class="demo-grid">
+          <div class="demo-field">
+            <label>Desde <span class="req">*</span></label>
+            <div class="demo-input">dd/mm/aaaa</div>
+          </div>
+          <div class="demo-field">
+            <label>Hasta <span class="req">*</span></label>
+            <div class="demo-input">dd/mm/aaaa</div>
+          </div>
+          <div class="demo-field">
+            <label>Deudor (opc.)</label>
+            <div class="demo-input">Ej: 88.201.900-4</div>
+          </div>
+          <div class="demo-field">
+            <label>Cliente (opc.)</label>
+            <div class="demo-input">Ej: 22.222.222-2</div>
+          </div>
+        </div>
+        <p class="demo-hint">Desde y Hasta marcan el periodo del certificado. Deudor y Cliente son opcionales.</p>
+        <button type="button" class="demo-submit">Ejecutar</button>
+      </div>
+    </div>
+  </div>
+
+  <h3>Pantalla — Consulta de cesiones (cesionario)</h3>
+  <p>Sirve para comprobar si un <strong>folio</strong> de un <strong>cedente</strong> aparece en el libro de facturas cedidas en el periodo elegido. El <strong>RUT del cesionario</strong> no lo escribe usted: lo aplica el sistema segun la empresa (perfil). Si no hay datos previos guardados, al ejecutar se dispara una consulta al servicio y al final vera el resultado en la misma pagina o un mensaje claro si no hubo coincidencia.</p>
+  <p class="ui-caption">Pestaña <strong>Consulta cesiones</strong></p>
+  <div class="demo-shell">
+    <div class="demo-nav">
+      <span class="demo-nav-brand">Consultas SII</span>
+      <div class="demo-nav-actions">
+        <span class="demo-btn-pill">Principal</span>
+        <span class="demo-btn-pill">Historial</span>
+        <span class="demo-btn-ghost">Salir</span>
+      </div>
+    </div>
+    <div class="demo-strip">Usuario: ibramer</div>
+    <div class="demo-main">
+      <div class="demo-header-row">
+        <div class="demo-page-h1">Consulta de cesiones (cesionario)</div>
+        <span class="demo-user">Usuario: ibramer</span>
+      </div>
+      <div class="demo-tabs">
+        <span class="demo-tab">Certificado de cesion</span>
+        <span class="demo-tab active">Consulta cesiones</span>
+      </div>
+      <div class="demo-card-inner">
+        <div class="demo-instr">
+          <h4>Instrucciones</h4>
+          <ol>
+            <li>Indica <strong>Desde</strong> y <strong>Hasta</strong> del periodo (obligatorias).</li>
+            <li>Ingresa el <strong>RUT del cedente</strong> y el <strong>folio del documento</strong>; con eso y el periodo se hace la busqueda.</li>
+            <li>Pulsa <strong>Ejecutar</strong>: si ya hay resultados de una consulta anterior, se muestran abajo; si no, se inicia una nueva consulta y al terminar podras ver los resultados en el mismo lugar.</li>
+          </ol>
+          <p class="small">El RUT del cesionario de la consulta lo aplica el sistema segun tu perfil; no hace falta ingresarlo.</p>
+        </div>
+        <div class="demo-grid">
+          <div class="demo-field">
+            <label>Desde <span class="req">*</span></label>
+            <div class="demo-input">dd/mm/aaaa</div>
+          </div>
+          <div class="demo-field">
+            <label>Hasta <span class="req">*</span></label>
+            <div class="demo-input">dd/mm/aaaa</div>
+          </div>
+          <div class="demo-field">
+            <label>RUT cedente <span class="req">*</span></label>
+            <div class="demo-input">Ej: 12.345.678-9</div>
+          </div>
+          <div class="demo-field">
+            <label>Folio del documento <span class="req">*</span></label>
+            <div class="demo-input">Ej: 123456</div>
+          </div>
+        </div>
+        <p class="demo-hint">La busqueda usa el periodo, el RUT del cedente y el folio. Si no hay resultados previos, se hace una consulta nueva con los mismos datos.</p>
+        <button type="button" class="demo-submit">Ejecutar</button>
+      </div>
+    </div>
+  </div>
+
+  <h3>Pantalla — Certificado masivo (consulta de cesiones)</h3>
+  <p>Esta vista permite hacer una <strong>consulta masiva</strong> por cedente, deudor y periodo, revisar un listado paginado y seleccionar varias filas para pedir certificados en una sola accion.</p>
+  <p class="ui-caption">Opcion <strong>Principal → Certificado masivo</strong></p>
+  <div class="demo-shell">
+    <div class="demo-nav">
+      <span class="demo-nav-brand">Consultas SII</span>
+      <div class="demo-nav-actions">
+        <span class="demo-btn-pill">Principal</span>
+        <span class="demo-btn-pill">Historial</span>
+        <span class="demo-btn-ghost">Salir</span>
+      </div>
+    </div>
+    <div class="demo-strip">Usuario: ibramer</div>
+    <div class="demo-main">
+      <div class="demo-header-row">
+        <div class="demo-page-h1">Certificado masivo por cesiones</div>
+        <span class="demo-user">Usuario: ibramer</span>
+      </div>
+      <div class="demo-card-inner">
+        <div class="demo-instr">
+          <h4>Pasos sencillos</h4>
+          <ol>
+            <li>Ingrese <strong>RUT cedente</strong>, <strong>RUT deudor</strong>, <strong>Desde</strong> y <strong>Hasta</strong>.</li>
+            <li>Pulse <strong>Consultar cesiones</strong> para cargar el listado.</li>
+            <li>Marque filas y use <strong>Obtener certificado(s)</strong>.</li>
+          </ol>
+        </div>
+        <div class="demo-grid">
+          <div class="demo-field">
+            <label>RUT cedente <span class="req">*</span></label>
+            <div class="demo-input">Ej: 76.543.210-K</div>
+          </div>
+          <div class="demo-field">
+            <label>RUT deudor <span class="req">*</span></label>
+            <div class="demo-input">Ej: 11.222.333-4</div>
+          </div>
+          <div class="demo-field">
+            <label>Desde <span class="req">*</span></label>
+            <div class="demo-input">dd/mm/aaaa</div>
+          </div>
+          <div class="demo-field">
+            <label>Hasta <span class="req">*</span></label>
+            <div class="demo-input">dd/mm/aaaa</div>
+          </div>
+        </div>
+        <p class="demo-hint">Busqueda avanzada: folio desde/hasta. El filtro afecta la tabla mostrada en pantalla.</p>
+        <button type="button" class="demo-submit" style="margin-right:0.4rem;">Consultar cesiones</button>
+        <button type="button" class="demo-submit" style="background:#198754;">Obtener certificado(s)</button>
+      </div>
+      <div class="demo-card-inner" style="margin-top:0.75rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:0.6rem;flex-wrap:wrap;margin-bottom:0.45rem;">
+          <div style="font-size:0.92rem;font-weight:600;">Listado de la consulta</div>
+          <div style="font-size:0.78rem;color:var(--muted);">Pagina 1 de 3 (10 filas por pagina)</div>
+        </div>
+        <table class="doc-table" style="font-size:0.78rem;">
+          <thead>
+            <tr>
+              <th>Sel.</th>
+              <th>RUT cedente</th>
+              <th>Nombre cedente</th>
+              <th>RUT deudor</th>
+              <th>Folio</th>
+              <th>Monto cesion</th>
+              <th>Nº identif.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox" checked disabled /></td>
+              <td style="font-family:monospace;">76.543.210-K</td>
+              <td>Comercial Ejemplo SPA</td>
+              <td style="font-family:monospace;">11.222.333-4</td>
+              <td style="font-family:monospace;">154233</td>
+              <td style="font-family:monospace;text-align:right;">$ 1.250.000</td>
+              <td style="font-family:monospace;">983412</td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" disabled /></td>
+              <td style="font-family:monospace;">76.543.210-K</td>
+              <td>Comercial Ejemplo SPA</td>
+              <td style="font-family:monospace;">11.222.333-4</td>
+              <td style="font-family:monospace;">154240</td>
+              <td style="font-family:monospace;text-align:right;">$ 980.000</td>
+              <td style="font-family:monospace;">983419</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h3>Lista Solicitudes (columna Detalle)</h3>
+  <p>Esta lista muestra tramites como certificados u otras solicitudes registradas a su nombre. Cada fila resume periodo y RUTs; para ver el estado completo o pedir el <strong>PDF</strong> debe abrir el <strong>detalle</strong> con el boton de la ultima columna. Las consultas de cesiones por folio <strong>no</strong> se gestionan desde esta lista: van en <strong>Principal</strong>, opcion <strong>Consulta cesiones</strong>.</p>
+  <p class="ui-caption">Boton <strong>Ver detalle</strong> por fila</p>
+  <div class="demo-shell">
+    <div class="demo-main" style="padding-top:0.5rem;">
+      <div class="demo-card-inner">
+        <div class="demo-page-h1" style="font-size:1rem;margin-bottom:0.5rem;">Solicitudes</div>
+        <p style="font-size:0.78rem;color:var(--muted);margin:0 0 0.65rem;">Listado de tus solicitudes de certificados y tramites similares. Las consultas de cesiones las haces desde <strong>Principal</strong>, opcion Consulta cesiones.</p>
+        <table class="doc-table" style="font-size:0.78rem;">
+          <thead><tr><th>Periodo</th><th>RUT tarea</th><th>Deudor</th><th>Cliente</th><th>Cesionario</th><th>Detalle</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>2025-01-01 a 2025-01-31</td>
+              <td style="font-family:monospace;">12345678-9</td>
+              <td style="font-family:monospace;">—</td>
+              <td style="font-family:monospace;">—</td>
+              <td style="font-family:monospace;">—</td>
+              <td><span class="demo-submit" style="display:inline-block;padding:0.2rem 0.5rem;font-size:0.72rem;">Ver detalle</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 id="que-es">Que hace esta aplicacion</h2>
+  <div class="doc-card">
+    <p>La pagina conecta con los servicios del <strong>SII</strong> para pedir certificados, consultar cesiones en forma puntual o masiva, y revisar lo ya solicitado para descargar documentos cuando esten listos.</p>
+    <ul>
+      <li><strong>Certificado de cesion:</strong> usted indica el periodo (<strong>Desde / Hasta</strong>) y, si corresponde, <strong>Deudor</strong> y <strong>Cliente</strong> opcionales. El RUT de la tarea (empresa) lo fija el sistema; no debe inventarlo ni cambiarlo.</li>
+      <li><strong>Consulta cesiones:</strong> periodo mas <strong>RUT cedente</strong> y <strong>Folio del documento</strong>. El resultado (tablas o mensajes) aparece en la misma pantalla de <strong>Principal</strong>.</li>
+      <li><strong>Consulta masiva y certificado masivo:</strong> desde <strong>Principal → Certificado masivo</strong> puede consultar por cedente/deudor/fechas, filtrar la tabla, marcar filas y pedir varios certificados en una sola gestion.</li>
+      <li><strong>Solicitudes:</strong> historial de pedidos; abra <strong>Ver detalle</strong> y desde ahi use <strong>Obtener documento</strong> cuando el PDF este disponible.</li>
+    </ul>
+    <p style="margin-bottom:0;">Por seguridad y trazabilidad, <strong>cada usuario solo ve sus propias solicitudes</strong>. Si necesita otra cuenta o le falta un permiso, debe pedirlo en su organizacion.</p>
+  </div>
+
+  <h2 id="antes">Antes de empezar</h2>
+  <div class="doc-card">
+    <p>Revise estos puntos una vez; le ahorraran mensajes de error o pantallas en blanco al abrir documentos.</p>
+    <ol>
+      <li><strong>Navegador actualizado</strong> (Chrome, Edge o Firefox). Evite versiones muy antiguas: el calendario de fechas y la seguridad del sitio funcionan mejor en navegadores recientes.</li>
+      <li><strong>Direccion web correcta</strong> la debe dar su organizacion (intranet, favorito o correo). Guarde esa direccion para no confundirla con otros sitios.</li>
+      <li><strong>Usuario y clave</strong> que le asignaron. No las comparta; si las olvido, pida reinicio a quien corresponda en su empresa.</li>
+      <li><strong>Ventanas emergentes:</strong> muchos PDF se abren en una pestana nueva. Si el navegador las bloquea, busque el icono de “ventana bloqueada” en la barra de direcciones y permita ventanas para este sitio.</li>
+    </ol>
+  </div>
+
+  <h2 id="login">Guia 1 — Entrar y salir</h2>
+  <div class="doc-card">
+    <p>Abra la direccion web del sistema. Si no hay sesion activa, vera la pantalla de ingreso (ejemplo arriba en <strong>Ejemplos de pantalla</strong>). El usuario suele ser el que le entregaron por correo o por su area de sistemas; respete <strong>mayusculas y minusculas</strong> en usuario y clave.</p>
+    <ol>
+      <li>Escriba su <strong>Usuario</strong> y su <strong>Password</strong> tal como se los dieron. Si copia y pega, asegurese de no dejar espacios al inicio o al final.</li>
+      <li>Pulse <strong>Ingresar</strong> una sola vez y espere. Si los datos son correctos, pasara a la pantalla principal y podra ver un mensaje como <span class="msg">Sesion iniciada como …</span></li>
+      <li>Si deja la sesion abierta en una computadora compartida, otra persona podria usar su cuenta: por eso, al terminar, use <strong>Salir</strong> en la barra superior. Verá <span class="msg">Sesion cerrada.</span></li>
+    </ol>
+    <p>Si tras un tiempo sin usar la pagina le aparece <span class="msg">Token invalido o expirado.</span>, no es un fallo grave: cierre sesion si aun puede, y vuelva a entrar con usuario y clave.</p>
+    <p>Si no puede entrar desde el primer intento: revise mensajes como <span class="msg">Credenciales invalidas</span> o <span class="msg">Usuario inactivo</span>. Significado y otros textos en <a href="#mensajes">Mensajes de referencia</a>.</p>
+  </div>
+
+  <h2 id="certificado">Guia 2 — Certificado de cesion</h2>
+  <div class="doc-card">
+    <p>Use esta guia cuando necesite el <strong>documento PDF del certificado</strong> para un mes o rango de fechas concreto. El sistema puede intentar abrir el PDF en una pestana nueva en cuanto este listo; si el tramite tarda, el documento quedara asociado a una fila en <strong>Solicitudes</strong>.</p>
+    <ol>
+      <li>Pulse <strong>Principal</strong> en el menu y entre a la vista de <strong>Consulta cesiones</strong> para usar las operaciones del inicio.</li>
+      <li>Complete <strong>Desde</strong> y <strong>Hasta</strong> con el periodo que necesita. Puede usar el calendario del navegador haciendo clic en el campo de fecha.</li>
+      <li>Si su procedimiento interno lo pide, rellene <strong>Deudor (opc.)</strong> y/o <strong>Cliente (opc.)</strong> con RUT en formato con puntos o sin ellos, segun prefiera.</li>
+      <li>Pulse <strong>Ejecutar</strong> y espere los mensajes en la parte superior. Si no se abre el PDF automaticamente, vaya a <strong>Solicitudes</strong>, localice la fila del tramite, <strong>Ver detalle</strong> y luego <strong>Obtener documento</strong> (guia 5).</li>
+    </ol>
+    <figure>
+      <img src="manual-assets/fig-flujo-certificado.svg" width="560" height="200" alt="Flujo certificado PDF" />
+      <figcaption>Esquema del flujo cuando el PDF no abre de inmediato: siempre puede llegar al documento desde el detalle de la solicitud.</figcaption>
+    </figure>
+  </div>
+
+  <h2 id="cesiones">Guia 3 — Consulta cesiones</h2>
+  <div class="doc-card">
+    <p>Aqui no descarga un PDF de certificado: obtiene una <strong>respuesta en pantalla</strong> sobre si el folio buscado figura entre las facturas cedidas en el periodo, segun la configuracion de su empresa. Puede ver varios mensajes de “buscando” o “consultando” mientras el sistema trabaja; no cierre la pestana hasta que termine.</p>
+    <ol>
+      <li><strong>Principal</strong> &rarr; opcion <strong>Consulta cesiones</strong>.</li>
+      <li>Indique <strong>Desde</strong>, <strong>Hasta</strong>, el <strong>RUT del cedente</strong> y el <strong>Folio del documento</strong> (numero del documento que quiere verificar).</li>
+      <li>Pulse <strong>Ejecutar</strong>. Si ya habia una consulta guardada con los mismos datos, puede mostrar primero datos antiguos y luego actualizar; si no, ejecutara la consulta al servicio.</li>
+    </ol>
+    <div class="note">Si un mensaje le pide reintentar mas tarde, vuelva a <strong>Principal</strong> &rarr; <strong>Consulta cesiones</strong> con los <strong>mismos</strong> periodo, cedente y folio, como indique el texto en pantalla.</div>
+  </div>
+
+  <h2 id="masivo">Guia 4 — Consulta masiva y certificado masivo</h2>
+  <div class="doc-card">
+    <p>Use este flujo cuando necesite revisar varias cesiones y pedir certificados de varias filas en una sola gestion.</p>
+    <ol>
+      <li>En el menu superior, pulse <strong>Principal</strong> y luego <strong>Certificado masivo</strong>.</li>
+      <li>Complete <strong>RUT cedente</strong>, <strong>RUT deudor</strong>, <strong>Desde</strong> y <strong>Hasta</strong> (obligatorios).</li>
+      <li>Pulse <strong>Consultar cesiones</strong> y espere el listado.</li>
+      <li>Use <strong>Acortar el listado</strong> y, si necesita, <strong>Busqueda avanzada</strong> con folio desde/hasta para filtrar solo lo que ve en pantalla.</li>
+      <li>Marque filas (o <strong>Marcar todas las de esta pagina</strong>) y luego pulse <strong>Obtener certificado(s)</strong>.</li>
+      <li>Si no se abre documento de inmediato, vaya a <strong>Historial → Solicitudes</strong>, abra <strong>Ver detalle</strong> y use <strong>Obtener documento</strong>.</li>
+    </ol>
+  </div>
+
+  <h2 id="solicitudes">Guia 5 — Solicitudes</h2>
+  <div class="doc-card">
+    <p>El menu <strong>Solicitudes</strong> agrupa los tramites que generaron una solicitud registrada (por ejemplo certificados). Puede haber muchas filas: use la busqueda o la paginacion si la aplicacion las ofrece. La tabla resume datos clave; el detalle completo y los botones para documento estan en la pantalla siguiente.</p>
+    <p>Pulse <strong>Ver detalle</strong> solo en la fila que le interese. <strong>No</strong> existe boton de descarga de PDF en esta lista: debe entrar al detalle (guia 5).</p>
+    <figure>
+      <img src="manual-assets/fig-solicitudes-tabla.svg" width="680" height="140" alt="Tabla solicitudes" />
+      <figcaption>Columna Detalle: cada fila tiene su propio boton para abrir la ficha del tramite.</figcaption>
+    </figure>
+  </div>
+
+  <h2 id="pdf">Guia 6 — Obtener el PDF</h2>
+  <div class="doc-card">
+    <p>El PDF del resultado (cuando exista) se consigue desde la <strong>ficha del detalle</strong> de la solicitud, no desde la tabla resumida. Esa ficha muestra el estado del tramite y textos de ayuda; lea el bloque <strong>Como usar esta pantalla</strong> si la aplicacion lo muestra.</p>
+    <ol>
+      <li>En <strong>Solicitudes</strong>, pulse <strong>Ver detalle</strong> en la fila correcta.</li>
+      <li>Arriba revise el recuadro <strong>Datos de la consulta solicitada</strong> (fechas y RUTs) para confirmar que es el tramite que buscaba.</li>
+      <li>Pulse <strong>Obtener documento</strong>. El sistema actualiza el estado ante el SII si hace falta e intenta abrir el PDF. Si dice que el tramite sigue en proceso, espere unos segundos y pulse de nuevo <strong>Obtener documento</strong> sin salir de esta pantalla.</li>
+    </ol>
+    <figure>
+      <img src="manual-assets/fig-detalle-solicitud.svg" width="640" height="260" alt="Detalle solicitud" />
+      <figcaption>Esquema del detalle: datos de la solicitud y accion para pedir o abrir el documento.</figcaption>
+    </figure>
+  </div>
+
+  <h2 id="problemas">Si algo sale mal</h2>
+  <div class="doc-card">
+    <p>La mayoria de incidencias se resuelve comprobando la conexion a internet, permitiendo ventanas emergentes o esperando unos segundos y reintentando la misma accion. Use la tabla como guia rapida; si el mensaje en pantalla es largo o en ingles tecnico, copielo y envielo a soporte con la hora aproximada.</p>
+    <table class="doc-table">
+      <thead><tr><th>Situacion</th><th>Accion</th></tr></thead>
+      <tbody>
+        <tr><td>PDF no abre</td><td>Compruebe bloqueo de ventanas emergentes; en el detalle pulse otra vez <strong>Obtener documento</strong>. Pruebe tambien desde otra ventana del navegador.</td></tr>
+        <tr><td>Tramite en proceso</td><td>Espere 10–30 segundos: el SII puede tardar en asignar numero de seguimiento. Luego <strong>Obtener documento</strong> en el detalle. Para tramites de cesiones, puede repetir la consulta en <strong>Principal → Consulta cesiones</strong> si el mensaje lo indica.</td></tr>
+        <tr><td>Datos incorrectos</td><td>Lea el texto rojo o el aviso superior: suele indicar fecha mal escrita, RUT incompleto o campo obligatorio vacio. Corrija y vuelva a <strong>Ejecutar</strong> o a <strong>Ingresar</strong> segun corresponda.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="mensajes">Mensajes de referencia</h2>
+  <div class="doc-card">
+    <p>La aplicacion muestra en la parte superior avisos en texto plano: a veces son confirmaciones, a veces errores del servicio. No hace falta memorizarlos; esta lista ayuda a saber si debe esperar, corregir un dato o pedir ayuda. Los ejemplos usan puntos suspensivos donde el sistema completa su usuario o numeros.</p>
+    <ul style="margin:0;font-size:0.9rem;">
+      <li><span class="msg">Sesion iniciada como …</span> / <span class="msg">Sesion cerrada.</span></li>
+      <li><span class="msg">Solicitud registrada. Obteniendo el documento…</span></li>
+      <li><span class="msg">Buscando si ya hay resultados guardados…</span></li>
+      <li><span class="msg">Folio no se encuentra entre las facturas cedidas a interfactor.</span></li>
+      <li>Certificado masivo: <span class="msg">Consultar cesiones</span> para cargar filas y <span class="msg">Obtener certificado(s)</span> para pedir varios certificados en una sola gestion.</li>
+      <li>Cesiones (reintento): <span class="msg">…vuelve a intentar desde Principal (Consulta cesiones)…</span></li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+:root {
+  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+  color: #253746;
+  background: #d9e1e2;
+  --if-primary: #425563;
+  --if-accent: #da291c;
+  --if-dark: #253746;
+  --if-deep: #131e29;
+  --if-gray-100: #e6e6e6;
+  --if-gray-200: #d9e1e2;
+  --if-gray-300: #a4bcc2;
+  --if-gray-400: #98a4ae;
+  --if-gray-500: #768692;
+
+  --bs-primary: var(--if-primary);
+  --bs-primary-rgb: 66, 85, 99;
+  --bs-secondary: var(--if-gray-500);
+  --bs-secondary-rgb: 118, 134, 146;
+  --bs-success: #3f6f55;
+  --bs-success-rgb: 63, 111, 85;
+  --bs-info: var(--if-gray-300);
+  --bs-info-rgb: 164, 188, 194;
+  --bs-light: #ffffff;
+  --bs-dark: var(--if-dark);
+  --bs-border-color: #cfd8dc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 10% 20%, #f5f8f8, #e8eef0 60%, #dde6e9 100%);
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+/* Tabla certificado masivo: cabeceras ordenables */
+.masivo-th-sort {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.masivo-sort-btn {
+  font-size: inherit;
+  line-height: 1.25;
+}
+
+.masivo-sort-btn:hover,
+.masivo-sort-btn:focus-visible {
+  color: var(--if-primary) !important;
+}
+
+.navbar.bg-primary {
+  background: linear-gradient(90deg, var(--if-primary), var(--if-dark)) !important;
+}
+
+/* Barra superior: grupos ordenados y botones mas legibles */
+.navbar-if .navbar-brand {
+  letter-spacing: 0.02em;
+}
+
+.navbar-if-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.75rem;
+  justify-content: flex-end;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Menus desplegables del nav (compactos, sin depender del JS de Bootstrap) */
+.nav-if-dd {
+  position: relative;
+}
+
+.nav-if-dd .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.25rem;
+  min-width: 11rem;
+  z-index: 1050;
+}
+
+.nav-if-dd .dropdown-item {
+  text-align: left;
+}
+
+.navbar-if-toolbar .nav-if-dd + .nav-if-dd {
+  padding-left: 0.65rem;
+  margin-left: 0.1rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.navbar-if-exit {
+  padding-left: 0.65rem;
+  margin-left: 0.1rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 575.98px) {
+  .navbar-if-exit {
+    margin-left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    border-left: none !important;
+    padding-left: 0;
+    padding-top: 0.35rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+  }
+}
+
+.navbar-if .btn-sm.rounded-pill {
+  font-weight: 500;
+  padding-left: 0.9rem;
+  padding-right: 0.9rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.navbar-if .btn-outline-light.rounded-pill {
+  font-weight: 500;
+}
+
+.btn-primary {
+  border-color: var(--if-primary);
+  background-color: var(--if-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  border-color: var(--if-dark);
+  background-color: var(--if-dark);
+}
+
+.btn-outline-primary {
+  color: var(--if-primary);
+  border-color: var(--if-primary);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  color: #fff;
+  background-color: var(--if-primary);
+  border-color: var(--if-primary);
+}
+
+.btn-if-accent {
+  color: #fff;
+  background-color: var(--if-accent);
+  border-color: var(--if-accent);
+}
+
+.btn-if-accent:hover,
+.btn-if-accent:focus {
+  color: #fff;
+  background-color: #b82318;
+  border-color: #b82318;
+}
+
+.alert-info {
+  color: var(--if-deep);
+  background-color: #dbe7ea;
+  border-color: #bfd2d8;
+}
+
+.alert-primary {
+  color: var(--if-deep);
+  background-color: #d5dfe3;
+  border-color: #b7c8ce;
+}
+
+.card {
+  border: 1px solid #d5dde1 !important;
+}
+
+pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.if-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: inherit;
+  backdrop-filter: blur(2px);
+}
+
+.text-primary.spinner-border {
+  color: var(--if-primary) !important;
+  border-color: currentColor;
+  border-right-color: transparent;
+}
+
+.if-btn-spinner {
+  vertical-align: -0.125em;
+}

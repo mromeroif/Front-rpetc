@@ -1,0 +1,53 @@
+name: QA - Frontend (S3)
+
+on:
+  push:
+    branches:
+      - qa
+    paths:
+      - "src/**"
+      - "public/**"
+      - "index.html"
+      - "package.json"
+      - "package-lock.json"
+      - "vite.config.js"
+      - "scripts/**"
+      - ".github/workflows/qa-frontend.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: qa-frontend
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: qa
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.QA_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.QA_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.QA_AWS_REGION || 'us-east-1' }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Deploy frontend to S3
+        env:
+          STACK_NAME: ${{ vars.QA_STACK_NAME || 'rpetc-modern-app-qa' }}
+          FRONTEND_BUCKET: ${{ secrets.QA_FRONTEND_BUCKET }}
+          FRONTEND_S3_PREFIX: ${{ vars.QA_FRONTEND_S3_PREFIX || '' }}
+          VITE_API_BASE_URL: ${{ secrets.QA_API_BASE_URL }}
+          SETUP_FRONTEND_HOSTING: ${{ vars.QA_SETUP_FRONTEND_HOSTING || '0' }}
+        run: bash scripts/deploy.sh

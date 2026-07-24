@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="140" viewBox="0 0 680 140" role="img" aria-labelledby="t d">
+  <title id="t">Solicitudes list - Detalle column</title>
+  <desc id="d">Ver detalle button per row. No PDF download in list.</desc>
+  <rect width="680" height="140" fill="#fff" stroke="#dee2e6"/>
+  <text x="16" y="28" fill="#333" font-family="Segoe UI, sans-serif" font-size="15" font-weight="600">Solicitudes</text>
+  <rect x="16" y="44" width="648" height="28" fill="#f8f9fa"/>
+  <text x="24" y="62" fill="#333" font-family="Segoe UI, sans-serif" font-size="11" font-weight="600">Periodo</text>
+  <text x="200" y="62" fill="#333" font-family="Segoe UI, sans-serif" font-size="11" font-weight="600">RUT tarea</text>
+  <text x="520" y="62" fill="#333" font-family="Segoe UI, sans-serif" font-size="11" font-weight="600">Detalle</text>
+  <rect x="16" y="72" width="648" height="40" fill="#fff" stroke="#eee"/>
+  <text x="24" y="96" fill="#333" font-family="Segoe UI, sans-serif" font-size="11">2025-01-01 a 2025-01-31</text>
+  <text x="200" y="96" fill="#333" font-family="Segoe UI, monospace" font-size="11">12345678-9</text>
+  <rect x="512" y="78" width="92" height="28" rx="4" fill="#0d6efd"/>
+  <text x="528" y="96" fill="#fff" font-family="Segoe UI, sans-serif" font-size="11" font-weight="600">Ver detalle</text>
+</svg>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="200" viewBox="0 0 560 200" role="img" aria-labelledby="t d">
+  <title id="t">Flow: certificate and PDF</title>
+  <desc id="d">Inicio, Ejecutar, Solicitudes, Ver detalle, Obtener documento.</desc>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#495057"/>
+    </marker>
+  </defs>
+  <style type="text/css">
+    .box { fill: #f8f9fa; stroke: #495057; stroke-width: 1.5; }
+    .txt { font-family: Segoe UI, sans-serif; font-size: 12px; fill: #212529; }
+  </style>
+  <rect class="box" x="10" y="70" width="90" height="44" rx="6"/>
+  <text class="txt" x="35" y="96">Inicio</text>
+  <line x1="100" y1="92" x2="125" y2="92" stroke="#495057" marker-end="url(#arr)"/>
+  <rect class="box" x="125" y="70" width="90" height="44" rx="6"/>
+  <text class="txt" x="145" y="96">Ejecutar</text>
+  <line x1="215" y1="92" x2="240" y2="92" stroke="#495057" marker-end="url(#arr)"/>
+  <rect class="box" x="240" y="70" width="110" height="44" rx="6"/>
+  <text class="txt" x="255" y="96">Solicitudes</text>
+  <line x1="350" y1="92" x2="375" y2="92" stroke="#495057" marker-end="url(#arr)"/>
+  <rect class="box" x="375" y="70" width="100" height="44" rx="6"/>
+  <text class="txt" x="390" y="96">Ver detalle</text>
+  <line x1="425" y1="114" x2="425" y2="138" stroke="#495057" marker-end="url(#arr)"/>
+  <rect class="box" x="355" y="138" width="140" height="44" rx="6"/>
+  <text class="txt" x="365" y="165">Obtener documento</text>
+  <text class="txt" x="10" y="32" font-weight="600" font-size="14">Flow if PDF does not open immediately</text>
+</svg>

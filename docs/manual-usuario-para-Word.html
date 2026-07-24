@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="Generator" content="Manual RPETC" />
+  <!-- Microsoft Word: Archivo > Abrir > este HTML > Guardar como > Documento de Word (*.docx). Las imagenes se incrustan si existen los PNG en manual-assets/screenshots/ -->
+  <title>Guía de uso — Consultas SII (usuarios finales)</title>
+  <style>
+    /* Paleta alineada a la app: barra #2c3e50, fondo claro #ecf0f1, botones claros, acento Bootstrap #0d6efd */
+    :root {
+      --nav-bg: #2c3e50;
+      --nav-btn-bg: #ffffff;
+      --nav-btn-text: #1a252f;
+      --page-bg: #ecf0f1;
+      --card-bg: #ffffff;
+      --border: #dee2e6;
+      --text: #212529;
+      --muted: #6c757d;
+      --accent: #0d6efd;
+      --note-bg: #e7f1ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", "Calibri", system-ui, sans-serif;
+      line-height: 1.55;
+      color: var(--text);
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+      background: var(--page-bg);
+    }
+    .palette-bar {
+      height: 6px;
+      border-radius: 3px;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(90deg, var(--nav-bg) 0%, var(--nav-bg) 35%, var(--accent) 35%, var(--accent) 65%, var(--page-bg) 65%, #bdc3c7 100%);
+    }
+    .word-help {
+      background: #fff8e6;
+      border: 1px solid #e6d08a;
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+    .word-help strong { color: #7d5a00; }
+    h1 { font-size: 1.75rem; margin-top: 0; color: var(--nav-bg); }
+    h2 { font-size: 1.25rem; margin-top: 2rem; border-bottom: 2px solid var(--accent); padding-bottom: 0.35rem; color: var(--nav-bg); }
+    h3 { font-size: 1.05rem; margin-top: 1.25rem; color: #34495e; }
+    p, li { font-size: 0.95rem; }
+    .lead { font-size: 1.02rem; color: var(--muted); }
+    article.card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0;
+      box-shadow: 0 1px 3px rgba(44, 62, 80, 0.08);
+    }
+    figure {
+      margin: 1.25rem 0;
+      padding: 0.75rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      page-break-inside: avoid;
+    }
+    figure img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    figcaption {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.55rem;
+      text-align: center;
+    }
+    code, .msg {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 1rem 0; background: var(--card-bg); }
+    th, td { border: 1px solid var(--border); padding: 0.5rem 0.65rem; text-align: left; vertical-align: top; }
+    th { background: #f8f9fa; color: var(--nav-bg); }
+    .note {
+      background: var(--note-bg);
+      border-left: 4px solid var(--accent);
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    .toc { background: var(--card-bg); padding: 1rem 1.25rem; border-radius: 8px; margin: 1.5rem 0; border: 1px solid var(--border); }
+    .toc ol { margin: 0; padding-left: 1.25rem; }
+    .toc a { color: var(--accent); font-weight: 500; }
+    .img-missing { font-size: 0.85rem; color: #c0392b; margin-top: 0.5rem; }
+    @media print {
+      body { max-width: none; padding: 0; background: #fff; }
+      a[href]::after { content: ""; }
+      .word-help { border: 1px solid #ccc; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="palette-bar" role="presentation" aria-hidden="true"></div>
+
+  <div class="word-help">
+    <strong>Exportar a Microsoft Word:</strong> abra este mismo archivo con Word (<em>Archivo &gt; Abrir</em> y elija el .html, o arrastre el archivo a una ventana de Word). Luego <em>Archivo &gt; Guardar como &gt; Documento de Word (*.docx)</em>.
+    Para que aparezcan las capturas, coloque los PNG (o ejecute <code>copy-manual-screenshots.ps1</code> en la carpeta <code>docs</code>). Nombres: <code>02-nav-usuario.png</code>, <code>03-inicio-certificado.png</code>, <code>04-inicio-consulta-cesiones.png</code> dentro de <code>manual-assets/screenshots/</code>.
+  </div>
+
+  <h1>Guía de uso del sistema</h1>
+  <p class="lead">
+    Manual para <strong>usuarios que consultan el SII</strong> sin conocimientos técnicos.
+    Colores de referencia: barra de navegación oscura (<code>#2c3e50</code>), fondo de página claro (<code>#ecf0f1</code>), tarjetas blancas y acentos azules (<code>#0d6efd</code>), como en la aplicación.
+  </p>
+  <p class="lead">
+    <strong>PDF:</strong> imprimir desde el navegador (<em>Ctrl+P</em> → Guardar como PDF).
+  </p>
+
+  <nav class="toc" aria-label="Contenido">
+    <strong>Contenido</strong>
+    <ol>
+      <li><a href="#que-es">Qué hace la aplicación</a></li>
+      <li><a href="#antes">Antes de empezar</a></li>
+      <li><a href="#pantalla">Menú y pantallas (capturas)</a></li>
+      <li><a href="#login">Entrar y salir</a></li>
+      <li><a href="#certificado">Certificado (Inicio)</a></li>
+      <li><a href="#cesiones">Consulta cesiones (Inicio)</a></li>
+      <li><a href="#solicitudes">Solicitudes y detalle</a></li>
+      <li><a href="#pdf">Obtener el PDF</a></li>
+      <li><a href="#problemas">Si algo sale mal</a></li>
+      <li><a href="#mensajes">Mensajes de referencia</a></li>
+    </ol>
+  </nav>
+
+  <article class="card">
+    <h2 id="que-es">Qué hace esta aplicación</h2>
+    <ul>
+      <li><strong>Certificado:</strong> solicitar el certificado de cesión con el RUT de tarea definido por su empresa; usted indica el periodo y, si aplica, RUT opcionales.</li>
+      <li><strong>Consulta cesiones:</strong> comprobar si un folio, para un cedente y periodo dados, aparece entre las facturas cedidas al cesionario configurado (p. ej. Interfactor).</li>
+      <li><strong>Solicitudes:</strong> ver lo que ya pidió; pulse <strong>Ver detalle</strong> y luego <strong>Obtener documento</strong> para el PDF (no se descarga desde la lista).</li>
+    </ul>
+    <p>Cada usuario <strong>solo ve sus propias solicitudes</strong>. Para más accesos, contacte al administrador.</p>
+  </article>
+
+  <h2 id="antes">Antes de empezar</h2>
+  <ol>
+    <li>Navegador actualizado (Chrome, Edge o Firefox).</li>
+    <li>La dirección web que le entregó su organización.</li>
+    <li>Usuario y contraseña; no los comparta.</li>
+    <li>Si no se abre el PDF, permita <strong>ventanas emergentes</strong> para este sitio.</li>
+  </ol>
+
+  <h2 id="pantalla">Menú y pantallas (capturas de referencia)</h2>
+
+  <h3>Menú superior</h3>
+  <p>Verá <strong>Inicio</strong>, <strong>Solicitudes</strong> y <strong>Salir</strong>. Las consultas de cesiones las hace desde <strong>Inicio</strong>, pestaña <strong>Consulta cesiones</strong>.</p>
+  <figure>
+    <img src="manual-assets/screenshots/02-nav-usuario.png" alt="Captura: barra superior con Inicio, Solicitudes y Salir; debajo Usuario" width="900" />
+    <figcaption>Captura 1 — Menú (Inicio, Solicitudes, Salir).</figcaption>
+  </figure>
+  <p class="img-missing">Si no ve la imagen, copie su archivo a <code>manual-assets/screenshots/02-nav-usuario.png</code> o ejecute <code>copy-manual-screenshots.ps1</code>.</p>
+
+  <h2 id="login">Guía 1 — Entrar y salir</h2>
+  <ol>
+    <li>Abra la página e ingrese <strong>usuario</strong> y <strong>contraseña</strong>.</li>
+    <li>Si es correcto, verá un aviso como <span class="msg">Sesion iniciada como …</span></li>
+  </ol>
+  <p><strong>Problemas:</strong> <span class="msg">Credenciales invalidas</span>; <span class="msg">Usuario inactivo</span>; <span class="msg">Token invalido o expirado.</span> (cierre sesión y entre de nuevo).</p>
+  <p>Use <strong>Salir</strong> al terminar. Verá <span class="msg">Sesion cerrada.</span></p>
+
+  <h2 id="certificado">Guía 2 — Pedir un certificado (pestaña Certificado)</h2>
+  <figure>
+    <img src="manual-assets/screenshots/03-inicio-certificado.png" alt="Captura: Obtencion de certificado de cesion, pestanas y formulario Desde Hasta Deudor Cliente Ejecutar" width="900" />
+    <figcaption>Captura 3 — Inicio, pestaña «Certificado de cesión»: instrucciones, fechas obligatorias, Deudor y Cliente opcionales, botón Ejecutar.</figcaption>
+  </figure>
+  <p class="img-missing">Archivo esperado: <code>manual-assets/screenshots/03-inicio-certificado.png</code>.</p>
+  <ol>
+    <li><strong>Inicio</strong> → pestaña <strong>Certificado de cesión</strong>.</li>
+    <li>Complete <strong>Desde</strong> y <strong>Hasta</strong> (obligatorias).</li>
+    <li>Opcional: <strong>Deudor (opc.)</strong> y <strong>Cliente (opc.)</strong> con RUT.</li>
+    <li>No modifique <strong>RUT tarea (fijado)</strong>.</li>
+    <li>Pulse <strong>Ejecutar</strong>. Si el PDF no abre solo, vaya a <strong>Solicitudes</strong> → <strong>Ver detalle</strong> → <strong>Obtener documento</strong>.</li>
+  </ol>
+  <figure>
+    <img src="manual-assets/fig-flujo-certificado.svg" width="560" height="200" alt="Diagrama flujo certificado y PDF" />
+    <figcaption>Esquema — Flujo si el PDF no abre de inmediato.</figcaption>
+  </figure>
+
+  <h2 id="cesiones">Guía 3 — Consultar un folio (Consulta cesiones)</h2>
+  <figure>
+    <img src="manual-assets/screenshots/04-inicio-consulta-cesiones.png" alt="Captura: Consulta de cesiones cesionario, pestana activa, RUT cedente folio Ejecutar" width="900" />
+    <figcaption>Captura 4 — Inicio, pestaña «Consulta cesiones»: periodo, RUT cedente, folio del documento, Ejecutar.</figcaption>
+  </figure>
+  <p class="img-missing">Archivo esperado: <code>manual-assets/screenshots/04-inicio-consulta-cesiones.png</code>.</p>
+  <ol>
+    <li><strong>Inicio</strong> → pestaña <strong>Consulta cesiones</strong>.</li>
+    <li><strong>Desde</strong>, <strong>Hasta</strong>, <strong>RUT cedente</strong>, <strong>Folio del documento</strong>.</li>
+    <li><strong>Ejecutar</strong>. Resultados en la misma página o mensaje de folio no encontrado.</li>
+  </ol>
+  <div class="note">
+    Si debe reintentar una consulta de cesiones, use de nuevo <strong>Inicio → Consulta cesiones</strong> con los mismos datos.
+  </div>
+
+  <h2 id="solicitudes">Guía 4 — Solicitudes y detalle</h2>
+  <ol>
+    <li>Menú <strong>Solicitudes</strong>.</li>
+    <li>Busque o pagine. Pulse <strong>Ver detalle</strong> en la fila que necesite.</li>
+  </ol>
+  <figure>
+    <img src="manual-assets/fig-solicitudes-tabla.svg" width="680" height="140" alt="Esquema tabla Ver detalle" />
+    <figcaption>Esquema — Lista: columna Detalle; el PDF se obtiene en la pantalla siguiente.</figcaption>
+  </figure>
+
+  <h2 id="pdf">Guía 5 — Obtener el PDF (detalle)</h2>
+  <figure>
+    <img src="manual-assets/fig-detalle-solicitud.svg" width="640" height="260" alt="Esquema detalle solicitud Obtener documento" />
+    <figcaption>Esquema — Detalle: bloque «Datos de la consulta solicitada» y botón Obtener documento.</figcaption>
+  </figure>
+  <ol>
+    <li><strong>Ver detalle</strong> en la fila deseada.</li>
+    <li>Revise <strong>Datos de la consulta solicitada</strong>.</li>
+    <li><strong>Obtener documento</strong> para actualizar estado y abrir el PDF.</li>
+  </ol>
+
+  <h2 id="problemas">Si algo sale mal</h2>
+  <table>
+    <thead><tr><th>Situación</th><th>Qué hacer</th></tr></thead>
+    <tbody>
+      <tr><td>No abre el PDF</td><td>Permitir ventanas emergentes; reintentar <strong>Obtener documento</strong>.</td></tr>
+      <tr><td>Trámite en proceso</td><td>Esperar unos segundos y en el detalle pulse otra vez <strong>Obtener documento</strong>; en consultas de cesiones puede reintentar desde <strong>Inicio → Consulta cesiones</strong> con los mismos datos.</td></tr>
+      <tr><td>Error de fechas o RUT</td><td>Corregir según el mensaje.</td></tr>
+      <tr><td>Sesión / credenciales</td><td>Volver a entrar o pedir ayuda.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="mensajes">Mensajes de referencia (texto exacto)</h2>
+  <p>Ejemplos: <span class="msg">Sesion iniciada como …</span>, <span class="msg">Credenciales invalidas</span>, <span class="msg">Solicitud registrada. Obteniendo el documento…</span>, <span class="msg">Buscando si ya hay resultados guardados…</span>, <span class="msg">Folio no se encuentra entre las facturas cedidas a interfactor.</span></p>
+  <p>Lista completa en <code>manual-usuario-final.md</code> del mismo directorio.</p>
+
+  <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border);" />
+  <p style="font-size: 0.85rem; color: var(--muted);">
+    RPETC / Consultas SII — <code>modern-app/docs/</code>
+  </p>
+
+</body>
+</html>

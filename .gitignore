@@ -1,0 +1,21 @@
+# Secretos y configuracion local
+.env
+.env.dev
+.env.qa
+.env.local
+
+# Node / build
+node_modules/
+dist/
+dist-ssr/
+npm-debug.log*
+
+# IDE / OS
+.idea/
+.vscode/
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+
+# Capturas locales
+Captura*.png
