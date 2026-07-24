@@ -1,9 +1,9 @@
-name: QA - Frontend (S3, API productiva)
+name: Prod - Frontend (S3)
 
 on:
   push:
     branches:
-      - qa
+      - main
     paths:
       - "src/**"
       - "public/**"
@@ -12,11 +12,11 @@ on:
       - "package-lock.json"
       - "vite.config.js"
       - "scripts/**"
-      - ".github/workflows/qa-frontend.yml"
+      - ".github/workflows/prod-frontend.yml"
   workflow_dispatch:
 
 concurrency:
-  group: qa-frontend
+  group: prod-frontend
   cancel-in-progress: true
 
 permissions:
@@ -25,7 +25,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: qa
+    environment: prod
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,7 +43,7 @@ jobs:
           node-version: "20"
           cache: npm
 
-      - name: Deploy frontend QA (bucket rpetc-dev, API prod)
+      - name: Deploy frontend productivo
         env:
           STACK_NAME: ${{ vars.STACK_NAME || 'rpetc-modern-app' }}
           FRONTEND_BUCKET: ${{ secrets.FRONTEND_BUCKET }}

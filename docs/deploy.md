@@ -1,31 +1,37 @@
 # Despliegue frontend
 
-## Desarrollo local
-1. Copia `.env.example` a `.env`
-2. `VITE_API_BASE_URL` = `ApiUrl` del backend
-3. `npm install && npm run dev`
+## Modelo
+| Front | Bucket S3 | API | CI GitHub |
+|-------|-----------|-----|-----------|
+| **prod** (`main`) | `rpetc` | backend prod | `prod-frontend.yml` |
+| **QA** (`qa`) | `rpetc-dev` | backend prod | `qa-frontend.yml` |
 
-## Publicacion S3
-Desde la raiz del repo:
+QA usa el mismo bucket que dev local (`rpetc-dev`) y la API productiva compartida.
 
-| Comando | Descripcion |
-|---------|-------------|
-| `.\deploy.ps1 -Environment prod` | Build + sync S3 prod |
-| `.\deploy-qa.ps1` | Build + sync S3 QA |
-| `bash scripts/deploy.sh` | CI / Linux |
+## Local
+- Prod: `.env` → `FRONTEND_BUCKET=rpetc`, `VITE_API_BASE_URL`
+- QA/dev: `.env.dev` → `FRONTEND_BUCKET=rpetc-dev` (ver `.env.dev.example`)
 
-Variables en `.env`: `FRONTEND_BUCKET`, `FRONTEND_S3_PREFIX` (opcional), `VITE_API_BASE_URL`.
+## GitHub Actions (Front-rpetc)
 
-Si no defines `VITE_API_BASE_URL`, el script consulta CloudFormation (`STACK_NAME`, default `rpetc-modern-app-qa` en QA).
+### Prod — rama `main`, environment **`prod`**
+| Secret | Valor |
+|--------|-------|
+| `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` | IAM |
+| `FRONTEND_BUCKET` | `rpetc` |
+| `VITE_API_BASE_URL` | ApiUrl prod *(opcional)* |
 
-## GitHub Actions (repo frontend)
-Workflow: `.github/workflows/qa-frontend.yml` en rama `qa`.
+### QA — rama `qa`, environment **`qa`**
+| Secret | Valor |
+|--------|-------|
+| `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` | IAM |
+| `FRONTEND_BUCKET` | `rpetc-dev` |
+| `VITE_API_BASE_URL` | ApiUrl prod *(recomendado)* |
 
-Secrets: `QA_AWS_*`, `QA_FRONTEND_BUCKET`, opcional `QA_API_BASE_URL`.
-
-Variables: `QA_AWS_REGION`, `QA_STACK_NAME`, `QA_FRONTEND_S3_PREFIX`, `QA_SETUP_FRONTEND_HOSTING` (`1` la primera vez).
-
-## Manual de usuario
-- HTML: `docs/manual-usuario-final.html`
-- MD: `docs/manual-usuario-final.md`
-- PDF: `docs/build-manual-pdf.ps1`
+### Variables (opcionales, prod y qa)
+| Variable | Valor |
+|----------|-------|
+| `AWS_REGION` | `us-east-1` |
+| `STACK_NAME` | `rpetc-modern-app` |
+| `FRONTEND_S3_PREFIX` | vacío |
+| `SETUP_FRONTEND_HOSTING` | `0` (`1` solo la primera vez) |
