@@ -1,18 +1,9 @@
-name: QA - Frontend (S3, API productiva)
+name: Deploy QA to S3
 
 on:
   push:
     branches:
       - qa
-    paths:
-      - "src/**"
-      - "public/**"
-      - "index.html"
-      - "package.json"
-      - "package-lock.json"
-      - "vite.config.js"
-      - "scripts/**"
-      - ".github/workflows/qa-frontend.yml"
   workflow_dispatch:
 
 concurrency:
@@ -26,28 +17,30 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: qa
+
     steps:
-      - name: Checkout
+      - name: Checkout codigo
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Build
+        env:
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+        run: npm run build
+
+      - name: Configurar AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+          aws-region: us-east-1
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: npm
-
-      - name: Deploy frontend QA (bucket rpetc-dev, API prod)
-        env:
-          STACK_NAME: rpetc-modern-app
-          FRONTEND_BUCKET: rpetc-dev
-          FRONTEND_S3_PREFIX: ${{ vars.FRONTEND_S3_PREFIX || '' }}
-          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
-          SETUP_FRONTEND_HOSTING: ${{ vars.SETUP_FRONTEND_HOSTING || '0' }}
-        run: bash scripts/deploy.sh
+      - name: Deploy a S3
+        run: aws s3 sync dist/ s3://rpetc-dev --delete

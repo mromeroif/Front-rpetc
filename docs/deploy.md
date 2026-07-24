@@ -1,30 +1,32 @@
 # Despliegue frontend
 
-## CI automático (GitHub Actions)
-Solo rama **`qa`** / **`QA`**, environment **`qa`**.
+## CI (rama `qa`)
+Workflow: `.github/workflows/qa-frontend.yml`
 
-| Destino | Bucket S3 | API |
-|---------|-----------|-----|
-| Front QA | **`rpetc-dev`** (fijo en workflow) | `rpetc-modern-app` (prod) |
+Flujo simple: `npm install` → `npm run build` → `aws s3 sync` a **`s3://rpetc-dev`**.
 
-Prod (`rpetc`) se despliega manual: `.\deploy.ps1 -Environment prod`
+## GitHub — environment `qa`
 
-## Secrets (environment `qa`)
-| Secret | Obligatorio |
-|--------|-------------|
-| `AWS_ACCESS_KEY_ID` | Sí |
-| `AWS_SECRET_ACCESS_KEY` | Sí |
-| `VITE_API_BASE_URL` | Recomendado (ApiUrl prod) |
+### Secrets
+| Secret | Uso |
+|--------|-----|
+| `AWS_ACCESS_KEY_ID` | IAM deploy S3 |
+| `AWS_SECRET_ACCESS_KEY` | IAM deploy S3 |
 
-No hace falta secret `FRONTEND_BUCKET`: el workflow usa **`rpetc-dev`** directamente.
-
-## Variables (opcionales)
-| Variable | Default |
+### Variables
+| Variable | Ejemplo |
 |----------|---------|
-| `AWS_REGION` | `us-east-1` |
-| `SETUP_FRONTEND_HOSTING` | `0` |
+| `VITE_API_BASE_URL` | `https://tk31h2efqk.execute-api.us-east-1.amazonaws.com` |
 
-**No configures** `STACK_NAME` ni `FRONTEND_BUCKET` en GitHub: el workflow usa **`rpetc-modern-app`** y **`rpetc-dev`** fijos. Si tienes `STACK_NAME=rpetc-modern-app-qa` en variables, bórrala o ignórala (ya no se lee).
+No hace falta `FRONTEND_BUCKET` ni `STACK_NAME`: bucket fijo **`rpetc-dev`**, API prod en build.
 
 ## Local
-Copia `.env.dev.example` → `.env.dev` (`FRONTEND_BUCKET=rpetc-dev`).
+```powershell
+.\deploy-qa.ps1
+```
+(o copia `.env.dev.example` → `.env.dev`)
+
+## Prod (manual, sin CI)
+```powershell
+.\deploy.ps1 -Environment prod
+```
