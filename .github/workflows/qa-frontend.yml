@@ -32,8 +32,14 @@ jobs:
 
       - name: Build
         env:
-          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
-        run: npm run build
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || 'https://tk31h2efqk.execute-api.us-east-1.amazonaws.com' }}
+        run: |
+          if [ -z "$VITE_API_BASE_URL" ]; then
+            echo "Error: VITE_API_BASE_URL vacio. Configura la variable en environment qa." >&2
+            exit 1
+          fi
+          echo "Build con API: $VITE_API_BASE_URL"
+          npm run build
 
       - name: Configurar AWS
         uses: aws-actions/configure-aws-credentials@v4

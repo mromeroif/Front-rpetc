@@ -814,7 +814,14 @@ function App() {
       setPermissions((data.user && data.user.permissions) || []);
       setMessage(`Sesion iniciada como ${data.user?.username || credentials.username}`);
     } catch (error) {
-      setMessage(error.message);
+      const msg = String(error.message || error);
+      if (msg.includes("Unexpected token") || msg.includes("not valid JSON")) {
+        setMessage(
+          "No se pudo conectar con el API. Revisa VITE_API_BASE_URL del build (debe apuntar al backend, no al bucket S3)."
+        );
+      } else {
+        setMessage(msg);
+      }
     } finally {
       setLoading(false);
     }

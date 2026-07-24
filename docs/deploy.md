@@ -14,11 +14,11 @@ Flujo simple: `npm install` → `npm run build` → `aws s3 sync` a **`s3://rpet
 | `AWS_SECRET_ACCESS_KEY` | IAM deploy S3 |
 
 ### Variables
-| Variable | Ejemplo |
-|----------|---------|
+| Variable | Valor |
+|----------|-------|
 | `VITE_API_BASE_URL` | `https://tk31h2efqk.execute-api.us-east-1.amazonaws.com` |
 
-No hace falta `FRONTEND_BUCKET` ni `STACK_NAME`: bucket fijo **`rpetc-dev`**, API prod en build.
+Si no la defines, el workflow usa esa URL por defecto (backend prod compartido).
 
 ## Local
 ```powershell
