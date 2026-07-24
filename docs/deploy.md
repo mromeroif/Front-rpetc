@@ -3,7 +3,7 @@
 ## CI (rama `qa`)
 Workflow: `.github/workflows/qa-frontend.yml`
 
-Flujo simple: `npm install` → `npm run build` → `aws s3 sync` a **`s3://rpetc-dev`**.
+Flujo: `npm install` → `npm run build` → `aws s3 sync` a **`s3://rpetc-dev`**.
 
 ## GitHub — environment `qa`
 
@@ -12,21 +12,17 @@ Flujo simple: `npm install` → `npm run build` → `aws s3 sync` a **`s3://rpet
 |--------|-----|
 | `AWS_ACCESS_KEY_ID` | IAM deploy S3 |
 | `AWS_SECRET_ACCESS_KEY` | IAM deploy S3 |
+| `VITE_API_BASE_URL` | URL del API prod (backend compartido) |
 
-### Variables
-| Variable | Valor |
-|----------|-------|
-| `VITE_API_BASE_URL` | `https://tk31h2efqk.execute-api.us-east-1.amazonaws.com` |
-
-Si no la defines, el workflow usa esa URL por defecto (backend prod compartido).
+Si omites `VITE_API_BASE_URL`, el workflow usa por defecto  
+`https://tk31h2efqk.execute-api.us-east-1.amazonaws.com`.
 
 ## Local
 ```powershell
 .\deploy-qa.ps1
 ```
-(o copia `.env.dev.example` → `.env.dev`)
 
-## Prod (manual, sin CI)
+## Prod (manual)
 ```powershell
 .\deploy.ps1 -Environment prod
 ```
