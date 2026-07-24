@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - qa
+      - QA
     paths:
       - "src/**"
       - "public/**"
