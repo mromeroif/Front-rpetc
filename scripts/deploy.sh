@@ -7,7 +7,7 @@ ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 cd "${ROOT_DIR}"
 
 : "${AWS_REGION:=us-east-1}"
-: "${FRONTEND_BUCKET:?FRONTEND_BUCKET es obligatorio}"
+: "${FRONTEND_BUCKET:=rpetc-dev}"
 : "${STACK_NAME:=rpetc-modern-app}"
 : "${FRONTEND_S3_PREFIX:=}"
 : "${VITE_API_BASE_URL:=}"

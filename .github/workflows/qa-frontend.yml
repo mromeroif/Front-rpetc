@@ -47,7 +47,7 @@ jobs:
       - name: Deploy frontend QA (bucket rpetc-dev, API prod)
         env:
           STACK_NAME: ${{ vars.STACK_NAME || 'rpetc-modern-app' }}
-          FRONTEND_BUCKET: ${{ secrets.FRONTEND_BUCKET }}
+          FRONTEND_BUCKET: rpetc-dev
           FRONTEND_S3_PREFIX: ${{ vars.FRONTEND_S3_PREFIX || '' }}
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
           SETUP_FRONTEND_HOSTING: ${{ vars.SETUP_FRONTEND_HOSTING || '0' }}

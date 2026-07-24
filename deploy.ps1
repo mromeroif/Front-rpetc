@@ -104,6 +104,9 @@ $FrontendBucketName = Resolve-Value $FrontendBucketName "FRONTEND_BUCKET" $front
 if (-not $FrontendBucketName) {
     $FrontendBucketName = Resolve-Value $FrontendBucketName "WEBSITE_BUCKET" $frontendEnv
 }
+if (-not $FrontendBucketName -and $Environment -eq "dev") {
+    $FrontendBucketName = "rpetc-dev"
+}
 $FrontendS3Prefix = Resolve-Value $FrontendS3Prefix "FRONTEND_S3_PREFIX" $frontendEnv
 $ApiUrl = Resolve-Value $ApiUrl "VITE_API_BASE_URL" $frontendEnv
 $frontendPrefixNorm = Normalize-S3Prefix -Raw $FrontendS3Prefix
