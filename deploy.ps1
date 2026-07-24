@@ -24,12 +24,13 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+# dev y qa son equivalentes: front en rpetc-dev, API del backend productivo.
+if ($Environment -eq "qa") {
+    $Environment = "dev"
+}
+
 if (-not $StackName) {
-    $StackName = switch ($Environment) {
-        "dev" { "rpetc-modern-app-dev" }
-        "qa" { "rpetc-modern-app-qa" }
-        default { "rpetc-modern-app" }
-    }
+    $StackName = if ($Environment -eq "dev") { "rpetc-modern-app" } else { "rpetc-modern-app" }
 }
 
 function Read-EnvFile {
@@ -80,18 +81,16 @@ function Get-StackApiUrl {
     return ""
 }
 
-$baseEnvPath = Join-Path $PSScriptRoot "..\.env"
-$devEnvPath = Join-Path $PSScriptRoot "..\.env.dev"
-$qaEnvPath = Join-Path $PSScriptRoot "..\.env.qa"
+$baseEnvPath = Join-Path $PSScriptRoot ".env"
+$devEnvPath = Join-Path $PSScriptRoot ".env.dev"
 $frontendEnv = @{}
 
-if ($Environment -in @("dev", "qa")) {
-    $overlayEnvPath = if ($Environment -eq "qa") { $qaEnvPath } else { $devEnvPath }
+if ($Environment -eq "dev") {
     if (Test-Path $baseEnvPath) {
         $frontendEnv = Read-EnvFile -Path $baseEnvPath
     }
-    if (Test-Path $overlayEnvPath) {
-        $overlay = Read-EnvFile -Path $overlayEnvPath
+    if (Test-Path $devEnvPath) {
+        $overlay = Read-EnvFile -Path $devEnvPath
         foreach ($key in $overlay.Keys) {
             $frontendEnv[$key] = $overlay[$key]
         }

@@ -1,31 +1,30 @@
 # Despliegue frontend
 
-## Desarrollo local
-1. Copia `.env.example` a `.env`
-2. `VITE_API_BASE_URL` = `ApiUrl` del backend
-3. `npm install && npm run dev`
+## CI automático (GitHub Actions)
+Solo existe el environment **`qa`** en GitHub. El workflow `qa-frontend.yml` corre en rama **`qa`**.
 
-## Publicacion S3
-Desde la raiz del repo:
+| Destino | Bucket | API backend |
+|---------|--------|-------------|
+| Front QA | `rpetc-dev` | `rpetc-modern-app` (prod) |
 
-| Comando | Descripcion |
-|---------|-------------|
-| `.\deploy.ps1 -Environment prod` | Build + sync S3 prod |
-| `.\deploy-qa.ps1` | Build + sync S3 QA |
-| `bash scripts/deploy.sh` | CI / Linux |
+**Prod** (`rpetc`) no tiene CI: despliega manual con `.\deploy.ps1 -Environment prod` desde tu máquina.
 
-Variables en `.env`: `FRONTEND_BUCKET`, `FRONTEND_S3_PREFIX` (opcional), `VITE_API_BASE_URL`.
+## Secrets (environment `qa` en Front-rpetc)
+| Secret | Valor |
+|--------|-------|
+| `AWS_ACCESS_KEY_ID` | IAM |
+| `AWS_SECRET_ACCESS_KEY` | IAM |
+| `FRONTEND_BUCKET` | `rpetc-dev` |
+| `VITE_API_BASE_URL` | ApiUrl prod |
 
-Si no defines `VITE_API_BASE_URL`, el script consulta CloudFormation (`STACK_NAME`, default `rpetc-modern-app-qa` en QA).
+## Variables (opcionales)
+| Variable | Valor |
+|----------|-------|
+| `AWS_REGION` | `us-east-1` |
+| `STACK_NAME` | `rpetc-modern-app` |
+| `FRONTEND_S3_PREFIX` | vacío |
+| `SETUP_FRONTEND_HOSTING` | `0` |
 
-## GitHub Actions (repo frontend)
-Workflow: `.github/workflows/qa-frontend.yml` en rama `qa`.
-
-Secrets: `QA_AWS_*`, `QA_FRONTEND_BUCKET`, opcional `QA_API_BASE_URL`.
-
-Variables: `QA_AWS_REGION`, `QA_STACK_NAME`, `QA_FRONTEND_S3_PREFIX`, `QA_SETUP_FRONTEND_HOSTING` (`1` la primera vez).
-
-## Manual de usuario
-- HTML: `docs/manual-usuario-final.html`
-- MD: `docs/manual-usuario-final.md`
-- PDF: `docs/build-manual-pdf.ps1`
+## Local
+- QA: `.\deploy-qa.ps1` o rama `qa` en GitHub
+- Prod: `.\deploy.ps1 -Environment prod`

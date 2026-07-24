@@ -8,7 +8,7 @@ cd "${ROOT_DIR}"
 
 : "${AWS_REGION:=us-east-1}"
 : "${FRONTEND_BUCKET:?FRONTEND_BUCKET es obligatorio}"
-: "${STACK_NAME:=rpetc-modern-app-qa}"
+: "${STACK_NAME:=rpetc-modern-app}"
 : "${FRONTEND_S3_PREFIX:=}"
 : "${VITE_API_BASE_URL:=}"
 : "${SETUP_FRONTEND_HOSTING:=0}"
@@ -22,7 +22,7 @@ if [[ -z "${VITE_API_BASE_URL}" ]]; then
 fi
 
 if [[ -z "${VITE_API_BASE_URL}" || "${VITE_API_BASE_URL}" == "None" ]]; then
-  echo "No se pudo resolver VITE_API_BASE_URL. Define el secret QA_API_BASE_URL o despliega el backend antes." >&2
+  echo "No se pudo resolver VITE_API_BASE_URL. Define el secret VITE_API_BASE_URL (ApiUrl del backend productivo)." >&2
   exit 1
 fi
 
