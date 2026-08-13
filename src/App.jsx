@@ -10,6 +10,17 @@ const OPERATION_CERTIFICADOS_CESIONARIO = "certificados-cesionario";
 const VIEW_CERTIFICADOS_MASIVO = "certificadosMasivosCesiones";
 const MASIVO_MAX_PERIOD_DAYS = 30;
 const MASIVO_TABLE_PAGE_SIZE = 25;
+/** Consultas al SII si el archivo aun no esta generado (intento 1 inmediato + 2 reintentos). */
+const DOCUMENTO_RESULT_ATTEMPTS = 3;
+const DOCUMENTO_RESULT_RETRY_MS = 5000;
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isFilePendingError(message) {
+  return /archivo.*no est[aá] listo|estado actual|creado|HTTP 400/i.test(String(message || ""));
+}
 
 /** Campos agrupados para vista legible (evita tabla de muchas columnas). */
 const CESIONES_RESULTADO_GRUPOS = [
@@ -1120,26 +1131,48 @@ function App() {
       await loadCesionesRequests(cesPage, { silent: true });
 
       let hasPdf = requestHasPdfKey(req);
-      if (!hasPdf) {
+      let lastPendingMessage = "";
+      for (let attempt = 1; attempt <= DOCUMENTO_RESULT_ATTEMPTS && !hasPdf; attempt += 1) {
+        if (attempt > 1) {
+          setMessage(
+            `El archivo aun no esta listo. Consultando de nuevo al servicio (${attempt} de ${DOCUMENTO_RESULT_ATTEMPTS})...`,
+          );
+          await sleep(DOCUMENTO_RESULT_RETRY_MS);
+          await apiFetch(`/requests/${id}/fetch-status`, {
+            method: "POST",
+            body: JSON.stringify({ id_tarea: taskId }),
+          });
+          req = await pull();
+          hasPdf = requestHasPdfKey(req);
+          if (hasPdf) break;
+        }
         try {
           await apiFetch(`/requests/${id}/fetch-result`, {
             method: "POST",
             body: JSON.stringify({ id_tarea: taskId }),
           });
+          req = await pull();
+          await loadRequests(pageToRefresh, { silent: true, excludeCesiones: true });
+          await loadCesionesRequests(cesPage, { silent: true });
+          hasPdf = requestHasPdfKey(req);
+          if (!hasPdf) {
+            lastPendingMessage =
+              "Archivo solicitado al servicio. Aun no esta disponible; por favor reintenta mas tarde.";
+          }
         } catch (resultErr) {
           req = await pull();
           await loadRequests(pageToRefresh, { silent: true, excludeCesiones: true });
           await loadCesionesRequests(cesPage, { silent: true });
           const resultErrMessage = resultErr?.message || "";
-          const filePending =
-            /archivo.*no est[aá] listo|estado actual|creado|HTTP 400/i.test(resultErrMessage);
-          const baseResultMessage = filePending
-            ? "Archivo solicitado al servicio. Aun no esta disponible; por favor reintenta mas tarde."
-            : resultErrMessage || "No se pudo obtener el resultado todavia; el tramite puede seguir en proceso.";
+          if (isFilePendingError(resultErrMessage)) {
+            lastPendingMessage =
+              "Archivo solicitado al servicio. Aun no esta disponible; por favor reintenta mas tarde.";
+            continue;
+          }
           return {
             ok: false,
             message:
-              baseResultMessage +
+              (resultErrMessage || "No se pudo obtener el resultado todavia; el tramite puede seguir en proceso.") +
               (isCesionesOperation
                 ? isRestrictedUser
                   ? " Reintenta en unos momentos desde Inicio (pestaña Consulta cesiones)."
@@ -1147,10 +1180,19 @@ function App() {
                 : " Reintenta Obtener documento en el detalle de la solicitud."),
           };
         }
-        req = await pull();
-        await loadRequests(pageToRefresh, { silent: true, excludeCesiones: true });
-        await loadCesionesRequests(cesPage, { silent: true });
-        hasPdf = requestHasPdfKey(req);
+      }
+
+      if (!hasPdf && lastPendingMessage) {
+        return {
+          ok: false,
+          message:
+            lastPendingMessage +
+            (isCesionesOperation
+              ? isRestrictedUser
+                ? " Reintenta en unos momentos desde Inicio (pestaña Consulta cesiones)."
+                : " Reintenta con Actualizar solicitud en Historial cesiones."
+              : " Reintenta Obtener documento en el detalle de la solicitud."),
+        };
       }
 
       if (isCesionesOperation) {
